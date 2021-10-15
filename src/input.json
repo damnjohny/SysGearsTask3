@@ -1,0 +1,4 @@
+{ "inquirer" : [{"main_question" : "What is your marital status?", "main_answer" : ["Single", "Married"]},
+                {"Single" : "Are you planning on getting married next year?", "answer" : ["Yes", "No"]},
+                {"Married" : "How long have you been married?", "answer" : ["Less than a year", "More than a year"]},
+                {"Married" : "Have you celebrated your one year anniversary?", "answer" : ["Yes", "No"]}]}
