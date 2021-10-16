@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Main {
@@ -15,59 +14,32 @@ public class Main {
     private static final String input = "src/input.json";
     private static final File output = new File("src/output.json");
 
+    private static List<JSONObject> objectList = new ArrayList<>();
+    private static List<List<JSONObject>> objectLists = new ArrayList<>();
+
     public static void main(String[] args) {
 
         try {
             FileReader fileReader = new FileReader(input);
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(fileReader);
+            JSONObject object = (JSONObject) jsonParser.parse(fileReader);
 
-            JSONArray inquirer = (JSONArray) jsonObject.get("inquirer");
-            JSONObject mainQuestion = (JSONObject) inquirer.get(0);
-            JSONObject main = new JSONObject();
-            main.put(mainQuestion.get("main_question"), mainQuestion.get("main_answer"));
+            JSONArray inquirerArray = (JSONArray) object.get("inquirer");
 
-            var iterator = inquirer.iterator();
+            var iterator = inquirerArray.iterator();
+            JSONObject questionObject = (JSONObject) iterator.next(); // {"question":"What is your marital status?","answer":["Single","Married"]}
 
-            List<List<JSONObject>> singleLists = new ArrayList<>();
-            List<List<JSONObject>> marriedLists = new ArrayList<>();
+            JSONArray questionArray = (JSONArray) questionObject.get("answer"); // ["Single","Married"]
 
-            List<JSONObject> singleList = new ArrayList<>();
-            singleList.add(main);
-            List<JSONObject> marriedList = new ArrayList<>();
-            marriedList.add(main);
-
-// первый раз в список записываем main и следующий обьект
-// следущие разы мы копируем старый список и добавляем в него следующий элемент
+            String first_answer = questionArray.get(0).toString(); // Single
+            String second_answer = questionArray.get(1).toString(); // Married
 
             while (iterator.hasNext()) {
-                JSONObject innerObject = (JSONObject) iterator.next();
-                if (innerObject.containsKey("Single")) {
-                    List<JSONObject> innerList = new ArrayList<>();
-                    innerList.addAll(singleList);
-                    JSONObject json = new JSONObject();
-                    json.put(innerObject.get("Single"), innerObject.get("answer"));
-                    singleList.add(json);
-                    singleLists.add(innerList);
+                JSONObject nextQuestion = (JSONObject) iterator.next();
 
-
-                } else if (innerObject.containsKey("Married")) {
-                    List<JSONObject> innerList = new ArrayList<>();
-                    innerList.addAll(marriedList);
-                    JSONObject json = new JSONObject();
-                    json.put(innerObject.get("Married"), innerObject.get("answer"));
-                    marriedList.add(json);
-                    marriedLists.add(marriedList);
+                if (nextQuestion.containsKey(first_answer)) {
 
                 }
-            }
-
-            for (List next : singleLists) {
-                System.out.println(next);
-            }
-
-            for (List next : marriedLists) {
-                System.out.println(next);
             }
 
 
