@@ -1,4 +1,100 @@
-{ "inquirer" : [{"question" : "What is your marital status?", "answer" : ["Single", "Married"]},
-                {"Single" : "Are you planning on getting married next year?", "answer" : ["Yes", "No"]},
-                {"Married" : "How long have you been married?", "answer" : ["Less than a year", "More than a year"]},
-                {"More than a year" : "Have you celebrated your one year anniversary?", "answer" : ["Yes", "No"]}]}
+{
+  "inquirer": [
+    {
+      "q1": {
+        "id" : "q1",
+        "question": "What is your marital status?",
+        "answers": [
+          {
+            "answer": "Single",
+            "next": "q2"
+          },
+          {
+            "answer": "Married",
+            "next": "q5"
+          }
+        ]
+      }
+    },
+    {
+      "q2": {
+        "id" : "q2",
+        "question": "Are you planning on getting married next year?",
+        "answers": [
+          {
+            "answer": "Yes",
+            "next": "q3"
+          },
+          {
+            "answer": "No",
+            "next": "q4"
+          }
+        ]
+      }
+    },
+    {
+      "q3": {
+        "id" : "q3",
+        "question": "Who is she?",
+        "answers": [
+          {
+            "answer": "Mary",
+            "next": ""
+          },
+          {
+            "answer": "Kate",
+            "next": ""
+          }
+        ]
+      }
+    },
+    {
+      "q4": {
+        "id" : "q4",
+        "question": "Are you not ready for that?",
+        "answers": [
+          {
+            "answer": "Yes",
+            "next": ""
+          },
+          {
+            "answer": "No",
+            "next": ""
+          }
+        ]
+      }
+    },
+    {
+      "q5": {
+        "id" : "q5",
+        "question": "How long have you been married?",
+        "answers": [
+          {
+            "answer": "Less than a year",
+            "next": ""
+          },
+          {
+            "answer": "More than a year",
+            "next": "q6"
+          }
+        ]
+      }
+    },
+    {
+      "q6": {
+        "id" : "q6",
+        "question": "Have you celebrated your one year anniversary?",
+        "answers": [
+          {
+            "answer": "Yes",
+            "next": ""
+          },
+          {
+            "answer": "No",
+            "next": ""
+          }
+        ]
+      }
+    }
+  ]
+}

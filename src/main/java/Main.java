@@ -14,8 +14,8 @@ public class Main {
     private static final String input = "src/input.json";
     private static final File output = new File("src/output.json");
 
-    private static List<JSONObject> objectList = new ArrayList<>();
-    private static List<List<JSONObject>> objectLists = new ArrayList<>();
+    private static final List<String> innerList = new ArrayList<>();
+    private static final List<List<String>> resultList = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -26,20 +26,77 @@ public class Main {
 
             JSONArray inquirerArray = (JSONArray) object.get("inquirer");
 
+            String firstQuestionId = "q1";
+            String questionId = firstQuestionId;
+
             var iterator = inquirerArray.iterator();
-            JSONObject questionObject = (JSONObject) iterator.next(); // {"question":"What is your marital status?","answer":["Single","Married"]}
 
-            JSONArray questionArray = (JSONArray) questionObject.get("answer"); // ["Single","Married"]
-
-            String first_answer = questionArray.get(0).toString(); // Single
-            String second_answer = questionArray.get(1).toString(); // Married
+            int counter = 0;
 
             while (iterator.hasNext()) {
-                JSONObject nextQuestion = (JSONObject) iterator.next();
+                if (questionId.equals("") || !iterator.hasNext()) {
+                    List<String> copyOfInnerList = new ArrayList<>(innerList);
+                    resultList.add(copyOfInnerList);
+                    innerList.clear();
+                    questionId = firstQuestionId;
+                    break;
+                }
 
-                if (nextQuestion.containsKey(first_answer)) {
+                JSONObject jsonObject = (JSONObject) iterator.next();
+
+                if (!jsonObject.containsKey(questionId)) {
+                    counter++;
+                    continue;
+                }
+
+                Parser answered = Parser.parseQuestion(jsonObject, questionId);
+                innerList.add(answered.toString());
+                questionId = Parser.getFirstAnswerNext();
+                counter++;
+
+                if (counter == inquirerArray.size()) {
+                    List<String> copyOfInnerList = new ArrayList<>(innerList);
+                    resultList.add(copyOfInnerList);
+                    innerList.clear();
+                    questionId = firstQuestionId;
+                }
+
+            }
+
+            var iterator2 = inquirerArray.iterator();
+
+            int counter2 = 0;
+
+            while (iterator2.hasNext()) {
+                if (questionId.equals("")) {
+                    List<String> copyOfInnerList = new ArrayList<>(innerList);
+                    resultList.add(copyOfInnerList);
+                    innerList.clear();
+                    break;
 
                 }
+
+                JSONObject jsonObject = (JSONObject) iterator2.next();
+
+                if (!jsonObject.containsKey(questionId)) {
+                    counter2++;
+                    continue;
+                }
+
+                Parser answered = Parser.parseQuestion(jsonObject, questionId);
+                innerList.add(answered.toStringSecond());
+                questionId = Parser.getSecondAnswerNext();
+                counter2++;
+
+                if (counter2 == inquirerArray.size()) {
+                    List<String> copyOfInnerList = new ArrayList<>(innerList);
+                    resultList.add(copyOfInnerList);
+                    innerList.clear();
+                }
+            }
+
+            for (List next : resultList) {
+                System.out.println(next);
             }
 
 
